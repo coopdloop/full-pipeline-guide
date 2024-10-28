@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-grafana-datasources
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: PostgreSQL
+      type: postgres
+      url: {{ .Release.Name }}-postgresql:5432
+      user: postgres
+      secureJsonData:
+        password: {{ .Values.postgresql.password }}
+      jsonData:
+        database: {{ .Values.postgresql.database }}
+        sslmode: "disable"
+        maxOpenConns: 100
+        maxIdleConns: 100
+        connMaxLifetime: 14400
+        postgresVersion: 1300
+        timescaledb: false

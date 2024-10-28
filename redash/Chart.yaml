@@ -1,5 +1,0 @@
-apiVersion: v2
-name: redash-dashboard
-description: Redash dashboard with PostgreSQL
-version: 0.1.0
-type: application
