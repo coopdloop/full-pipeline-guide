@@ -32,7 +32,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         if: always()
         with:
-          image-ref: 'grafana/grafana:latest'
+          image-ref: 'cgr.dev/chainguard/grafana:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
           skip-setup-trivy: true
