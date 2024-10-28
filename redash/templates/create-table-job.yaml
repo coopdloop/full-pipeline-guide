@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-create-tables
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-tables
+        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        command: ["/app/manage.py", "database", "create_tables"]
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-redash-config
+      restartPolicy: Never
+  backoffLimit: 4

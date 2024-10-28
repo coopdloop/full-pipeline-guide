@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-redash-config
+data:
+  REDASH_DATABASE_URL: "postgresql://postgres:redashpassword@{{ .Release.Name }}-postgresql:5432/redash"
+  REDASH_REDIS_URL: "redis://{{ .Release.Name }}-redis:6379/0"
+  PYTHONUNBUFFERED: "0"
+  REDASH_LOG_LEVEL: "DEBUG"
+  REDASH_REDIS_DB: "0"
+  REDASH_COOKIE_SECRET: "redash-secret-key"
+  REDASH_SECRET_KEY: "redash-secret-key"
+  REDASH_CORS_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
+  REDASH_REFERRER_POLICY: "no-referrer-when-downgrade"
+  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
+  REDASH_MAIL_SERVER: ""
+  REDASH_MAIL_PORT: "25"
+  REDASH_ENFORCE_CSRF: "true"
+  REDASH_GUNICORN_TIMEOUT: "60"
+  REDASH_CELERY_WORKER_MAX_TASKS_PER_CHILD: "10"
+  REDASH_QUERY_RESULTS_CLEANUP_ENABLED: "true"
+  REDASH_QUERY_RESULTS_CLEANUP_COUNT: "100"
+  REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE: "7"

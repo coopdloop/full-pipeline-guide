@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redash
+      role: worker
+  template:
+    metadata:
+      labels:
+        app: redash
+        role: worker
+    spec:
+      containers:
+      - name: worker
+        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        command: ["/app/bin/docker-entrypoint", "worker"]
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-redash-config
+        env:
+        - name: QUEUES
+          value: "queries,scheduled_queries,celery"
+        - name: WORKERS_COUNT
+          value: "2"
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - ps aux | grep -v grep | grep -q celery
+          initialDelaySeconds: 30
+          periodSeconds: 30

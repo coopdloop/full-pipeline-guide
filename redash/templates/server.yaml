@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redash
+      role: server
+  template:
+    metadata:
+      labels:
+        app: redash
+        role: server
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox
+        command: ['sh', '-c', 'until nc -z -w5 {{ .Release.Name }}-postgresql 5432; do echo waiting for postgres; sleep 2; done;']
+      containers:
+      - name: server
+        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        command: ["/app/bin/docker-entrypoint", "server"]
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-redash-config
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10

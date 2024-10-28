@@ -1,0 +1,22 @@
+server:
+  image:
+    repository: redash/redash
+    tag: latest
+  service:
+    type: NodePort
+    port: 5000
+    nodePort: 30001
+
+postgresql:
+  image:
+    repository: postgres
+    tag: 13
+  service:
+    port: 5432
+  password: redashpassword
+  database: redash
+
+redis:
+  image:
+    repository: redis
+    tag: 6
