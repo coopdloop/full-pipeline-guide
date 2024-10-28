@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: trivy-scan-redash
+  name: trivy-scan-grafana
 spec:
   template:
     spec:
@@ -16,5 +16,5 @@ spec:
         - HIGH,CRITICAL
         - --format
         - table
-        - redash/redash:10.1.0
+        - grafana/grafana:latest
       restartPolicy: Never
