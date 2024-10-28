@@ -16,5 +16,5 @@ spec:
         - HIGH,CRITICAL
         - --format
         - table
-        - grafana/grafana:latest
+        - cgr.dev/chainguard/grafana:latest
       restartPolicy: Never

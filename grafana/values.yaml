@@ -1,6 +1,6 @@
 grafana:
   image:
-    repository: grafana/grafana
+    repository: cgr.dev/chainguard/grafana
     tag: latest
   service:
     type: NodePort
