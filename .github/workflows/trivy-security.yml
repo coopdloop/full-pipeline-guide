@@ -26,7 +26,7 @@ jobs:
           scan-ref: .
           format: 'table'
           exit-code: 0 # 1 will fail build on high, criticals
-          severity: 'CRITICAL, HIGH'
+          severity: HIGH,CRITICAL
 
       - name: Scan Container Images
         uses: aquasecurity/trivy-action@master
